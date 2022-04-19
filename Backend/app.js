@@ -1,9 +1,14 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
+const database = require("./db/connection");
+const Userschema = require("./User");
 
-app.get("/", (req, res) => {
-  res.send("this is home page");
+database();
+
+app.use(express.json());
+
+app.post("/", async (req, res) => {
+  res.json("home page");
 });
 
 app.get("/about", (req, res) => {
