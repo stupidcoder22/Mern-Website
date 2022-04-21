@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
 const database = require("./db/connection");
-const Userschema = require("./User");
+const auth = require("./routes/auth");
 
 database();
-
 app.use(express.json());
+app.use(auth);
 
 app.post("/", async (req, res) => {
   res.json("home page");
