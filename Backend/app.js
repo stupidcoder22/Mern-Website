@@ -16,6 +16,7 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
+  res.cookie("singh", "prateek");
   res.send("this is contact page");
 });
 

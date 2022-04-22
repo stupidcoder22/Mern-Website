@@ -68,21 +68,11 @@ router.post("/login", async (req, res) => {
         id: userdata._id.toString(),
       };
       const token = jwt.sign(data, jwtKey);
-      res.json({ info: "You have logged in succesfully", token: token });
+      res.cookie("jwt", token, { httpOnly: true });
+      // res.json({ info: "You have logged in succesfully", token: token });
     } else {
       res.json("wrong password");
     }
-
-    // if (val) {
-    //   jwt.sign({ userdata }, jwtKey, (err, token) => {
-    //     if (err) {
-    //       res.send({ result: "something went wrong" });
-    //     }
-    //     res.json({ userdata: userdata, token: token });
-    //   });
-    // } else {
-    //   res.status(403).json("Wrong Password");
-    // }
   } catch (error) {
     res.status(500).json(error);
   }
