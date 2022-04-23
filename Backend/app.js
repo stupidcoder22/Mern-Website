@@ -2,8 +2,10 @@ const express = require("express");
 const app = express();
 const database = require("./db/connection");
 const auth = require("./routes/auth");
+let cors = require("cors");
 
 database();
+app.use(cors());
 app.use(express.json());
 app.use(auth);
 

@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
   try {
     const userdata = await Userschema.findOne({ email: email });
     if (!userdata) {
-      return res.status(401).json({ error: "Email doesn't exist" });
+      return res.status(422).json({ error: "Email doesn't exist" });
     }
 
     const val = await bcrypt.compare(pass, userdata.pass);

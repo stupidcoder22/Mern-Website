@@ -1,6 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 const Login = () => {
+  const [userlogin, setuserlogin] = useState({
+    email: "",
+    pass: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setuserlogin({ ...userlogin, [name]: value });
+  };
+
+  const postDb = async (e) => {
+    e.preventDefault();
+
+    const { name, email, phone, work, pass, repass } = userlogin;
+
+    const res = await fetch("http://localhost:1000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, phone, work, work, pass, repass }),
+    });
+
+    const data = await res.json();
+
+    if (data.status === 422 || !data) {
+      window.alert("Invalid registration");
+      console.log("Invalid registration");
+    } else {
+      window.alert("registration successful");
+      console.log("registration successful");
+      navigate("/login");
+    }
+  };
   return (
     <section className="vh-100">
       <div className="container py-5 h-100">
@@ -19,6 +53,8 @@ const Login = () => {
                   type="email"
                   id="form1Example13"
                   className="form-control form-control-lg"
+                  onChange={handleChange}
+                  name="email"
                 />
                 <label className="form-label" htmlFor="form1Example13">
                   Email address
@@ -30,6 +66,8 @@ const Login = () => {
                   type="password"
                   id="form1Example23"
                   className="form-control form-control-lg"
+                  onChange={handleChange}
+                  name="pass"
                 />
                 <label className="form-label" htmlFor="form1Example23">
                   Password

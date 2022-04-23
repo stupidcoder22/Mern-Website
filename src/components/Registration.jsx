@@ -1,6 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
+  const [user, setuser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    work: "",
+    pass: "",
+    repass: "",
+  });
+
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setuser({ ...user, [name]: value });
+  };
+
+  const postDb = async (e) => {
+    e.preventDefault();
+
+    const { name, email, phone, work, pass, repass } = user;
+
+    const res = await fetch("http://localhost:1000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, phone, work, work, pass, repass }),
+    });
+
+    const data = await res.json();
+
+    if (data.status === 422 || !data) {
+      window.alert("Invalid registration");
+      console.log("Invalid registration");
+    } else {
+      window.alert("registration successful");
+      console.log("registration successful");
+      navigate("/login");
+    }
+  };
+
   return (
     <section className="vh-70 mt-3">
       <div className="container h-100">
@@ -14,7 +55,7 @@ const Registration = () => {
                       Registration
                     </p>
 
-                    <form className="mx-1 mx-md-4">
+                    <form method="POST" className="mx-1 mx-md-4">
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
@@ -22,6 +63,8 @@ const Registration = () => {
                             type="text"
                             id="form3Example1c"
                             className="form-control"
+                            onChange={handleChange}
+                            name="name"
                           />
                           <label
                             className="form-label"
@@ -39,6 +82,8 @@ const Registration = () => {
                             type="email"
                             id="form3Example3c"
                             className="form-control"
+                            onChange={handleChange}
+                            name="email"
                           />
                           <label
                             className="form-label"
@@ -56,6 +101,8 @@ const Registration = () => {
                             type="number"
                             id="form3Example3c"
                             className="form-control"
+                            onChange={handleChange}
+                            name="phone"
                           />
                           <label
                             className="form-label"
@@ -73,6 +120,8 @@ const Registration = () => {
                             type="text"
                             id="form3Example3c"
                             className="form-control"
+                            onChange={handleChange}
+                            name="work"
                           />
                           <label
                             className="form-label"
@@ -90,6 +139,8 @@ const Registration = () => {
                             type="password"
                             id="form3Example4c"
                             className="form-control"
+                            onChange={handleChange}
+                            name="pass"
                           />
                           <label
                             className="form-label"
@@ -107,6 +158,8 @@ const Registration = () => {
                             type="password"
                             id="form3Example4cd"
                             className="form-control"
+                            onChange={handleChange}
+                            name="repass"
                           />
                           <label
                             className="form-label"
@@ -119,8 +172,9 @@ const Registration = () => {
 
                       <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <button
-                          type="button"
+                          type="submit"
                           className="btn btn-primary btn-lg"
+                          onClick={postDb}
                         >
                           Register
                         </button>
