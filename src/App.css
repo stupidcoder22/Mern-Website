@@ -77,3 +77,11 @@ textarea {
   color: #5170d2;
   font-weight: bold;
 }
+
+.notfound {
+  display: flex;
+  height: calc(100vh - 42px - 1em);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
