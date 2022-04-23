@@ -28,7 +28,7 @@ const About = () => {
                     href="#home"
                     role="tab"
                   >
-                    About
+                    <h3 className="font-weight-bold">About</h3>
                   </a>
                 </li>
                 {/* <li className="nav-item">
@@ -77,7 +77,7 @@ const About = () => {
           </div>
           {/* right side data toogle */}
 
-          <div className="col-md-8 pl-5 about-info mt-4">
+          <div className="col-md-8 pl-5 about-info mt-4 card shadow-lg p-3 mb-5 bg-white rounded">
             <div className="tab-content profile-tab" id="myTabContent">
               <div
                 className="tab-pane fade show active"
