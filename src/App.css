@@ -11,6 +11,35 @@
   margin-left: 10px;
 }
 
+.home-page {
+  background: linear-gradient(
+    to right,
+    #e2e7f4 0%,
+    #e2e7f4 50%,
+    white 50%,
+    white 100%
+  );
+}
+
+.home-div {
+  width: 100%;
+  height: calc(100vh - 42px - 1em);
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-div p {
+  color: #5170d2;
+  font-weight: bold;
+}
+
+.home-div h1 {
+  font-weight: bold;
+}
+
 .contact_info_item img {
   width: 40px;
 }
