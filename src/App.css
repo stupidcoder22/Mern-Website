@@ -56,3 +56,24 @@ textarea {
 .button {
   background-color: #7caad5;
 }
+
+.profilepic img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.profile-work a {
+  cursor: pointer;
+}
+
+.about-info .row label {
+  color: black;
+  font-weight: bold;
+}
+
+.about-info .row p {
+  color: #5170d2;
+  font-weight: bold;
+}
