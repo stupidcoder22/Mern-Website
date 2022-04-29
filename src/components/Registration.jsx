@@ -31,14 +31,14 @@ const Registration = () => {
     });
 
     const data = await res.json();
-
-    if (data.status === 422 || !data) {
-      window.alert("Invalid registration");
-      console.log("Invalid registration");
-    } else {
+    console.log(data);
+    if (data.msg) {
       window.alert("registration successful");
       console.log("registration successful");
       navigate("/login");
+    } else {
+      window.alert("Invalid registration");
+      console.log("Invalid registration");
     }
   };
 
@@ -65,6 +65,7 @@ const Registration = () => {
                             className="form-control"
                             onChange={handleChange}
                             name="name"
+                            required
                           />
                           <label
                             className="form-label"
@@ -84,6 +85,7 @@ const Registration = () => {
                             className="form-control"
                             onChange={handleChange}
                             name="email"
+                            required
                           />
                           <label
                             className="form-label"

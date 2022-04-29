@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Home = () => {
+  const tokenverify = async () => {
+    const val = localStorage.getItem("token");
+    const resp = await fetch("http://localhost:1000", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: val,
+      },
+    });
+    console.log(resp);
+  };
+
+  useEffect(() => {
+    const res = tokenverify();
+  }, []);
+
   return (
     <div className="home-page container-fluid">
       <div className="home-div">

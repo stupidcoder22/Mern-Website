@@ -1,39 +1,50 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [userlogin, setuserlogin] = useState({
     email: "",
     pass: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setuserlogin({ ...userlogin, [name]: value });
   };
+  // console.log(userlogin);
 
   const postDb = async (e) => {
     e.preventDefault();
 
-    const { name, email, phone, work, pass, repass } = userlogin;
-
-    const res = await fetch("http://localhost:1000/register", {
+    const { email, pass } = userlogin;
+    const res = await fetch("http://localhost:1000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, phone, work, work, pass, repass }),
+      body: JSON.stringify({ email, pass }),
     });
 
     const data = await res.json();
-
-    if (data.status === 422 || !data) {
-      window.alert("Invalid registration");
-      console.log("Invalid registration");
+    console.log(data);
+    if (data.msg) {
+      localStorage.setItem("token", data.token);
+      window.alert("Login successful");
+      console.log("Login successful");
+      navigate("/");
     } else {
-      window.alert("registration successful");
-      console.log("registration successful");
-      navigate("/login");
+      window.alert("Invalid Login");
+      console.log("Invalid login");
     }
+    // if (data.status === 422 || !data) {
+    //   window.alert("Invalid Login");
+    //   console.log("Invalid login");
+    // } else {
+    //   window.alert("Login successful");
+    //   console.log("Login successful");
+    //   navigate("/");
+    // }
   };
   return (
     <section className="vh-100">
@@ -55,6 +66,7 @@ const Login = () => {
                   className="form-control form-control-lg"
                   onChange={handleChange}
                   name="email"
+                  required
                 />
                 <label className="form-label" htmlFor="form1Example13">
                   Email address
@@ -77,8 +89,9 @@ const Login = () => {
               <button
                 type="button"
                 className="btn btn-primary btn-lg btn-block"
+                onClick={postDb}
               >
-                Sign in
+                Login
               </button>
             </form>
           </div>

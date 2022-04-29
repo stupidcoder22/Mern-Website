@@ -4,28 +4,32 @@ const Userschema = require("../model/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtKey = "secret";
+var authentication = require("../middleware/Authenticate");
 
-router.get("/", (req, res) => {
+router.get("/", authentication, (req, res) => {
   res.send("home page router");
 });
 
 router.post("/register", async (req, res) => {
   const { name, email, phone, work, pass, repass } = req.body;
   if (!name || !email || !phone || !work || !pass || !repass) {
-    return res.status(401).json({ error: "Please fill the data Properly" });
+    return res
+      .status(401)
+      .json({ error: "Please fill the data Properly", msg: false });
   }
   try {
     const emailCheck = await Userschema.findOne({
       email: email,
     });
     if (emailCheck) {
-      return res.status(401).json({ error: "Email already exist" });
+      return res.status(401).json({ error: "Email already exist", msg: false });
     }
 
     if (pass != repass) {
-      return res
-        .status(401)
-        .json({ error: "password and confirm password should be same" });
+      return res.status(401).json({
+        error: "password and confirm password should be same",
+        msg: false,
+      });
     }
 
     const secure = await bcrypt.hash(pass, 10);
@@ -41,10 +45,10 @@ router.post("/register", async (req, res) => {
     const user = await userdata.save();
 
     const data = {
-      id: user._id.toString(),
+      user: user._id.toString(),
     };
     const token = jwt.sign(data, jwtKey);
-    res.send({ user: user, token: token });
+    res.json({ user: user, token: token, msg: true });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -65,16 +69,31 @@ router.post("/login", async (req, res) => {
     const val = await bcrypt.compare(pass, userdata.pass);
     if (val) {
       const data = {
-        id: userdata._id.toString(),
+        user: userdata._id.toString(),
       };
       const token = jwt.sign(data, jwtKey);
-      res.cookie("jwt", token, { httpOnly: true });
-      // res.json({ info: "You have logged in succesfully", token: token });
+      res.json({
+        msg: true,
+        info: "You have loged in succesfully",
+        token: token,
+      });
     } else {
-      res.json("wrong password");
+      res.json({ msg: false });
     }
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+router.get("/getuser", authentication, async (req, res) => {
+  try {
+    console.log(req.user.id);
+    const userid = req.user.id;
+    const user = await Userschema.findById(userid).select("-pass");
+    res.send(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("internal server error");
   }
 });
 
