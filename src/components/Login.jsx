@@ -37,14 +37,6 @@ const Login = () => {
       window.alert("Invalid Login");
       console.log("Invalid login");
     }
-    // if (data.status === 422 || !data) {
-    //   window.alert("Invalid Login");
-    //   console.log("Invalid login");
-    // } else {
-    //   window.alert("Login successful");
-    //   console.log("Login successful");
-    //   navigate("/");
-    // }
   };
   return (
     <section className="vh-100">

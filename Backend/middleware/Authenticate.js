@@ -2,9 +2,8 @@ const jwt = require("jsonwebtoken");
 const jwtKey = "secret";
 
 const verify = (req, res, next) => {
-  console.log(req.header);
   const token = req.header("auth-token");
-  if (!token) {
+  if (token === null) {
     res.status(401).send({ error: "Please enter a valid token", msg: false });
   }
   try {

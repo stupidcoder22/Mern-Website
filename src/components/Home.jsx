@@ -1,20 +1,34 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const tokenverify = async () => {
     const val = localStorage.getItem("token");
-    const resp = await fetch("http://localhost:1000", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: val,
-      },
-    });
-    console.log(resp);
+    if (val !== null) {
+      const resp = await fetch("http://localhost:1000", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": val,
+        },
+      });
+      const result = await resp.json();
+      if (result.msg) {
+        console.log(result.uid);
+      }
+      if (result.msg === false) {
+        window.alert("Please provide valid token");
+        navigate("/login");
+      }
+    } else {
+      window.alert("Please Login First");
+      navigate("/login");
+    }
   };
 
   useEffect(() => {
-    const res = tokenverify();
+    tokenverify();
   }, []);
 
   return (

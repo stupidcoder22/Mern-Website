@@ -7,7 +7,8 @@ const jwtKey = "secret";
 var authentication = require("../middleware/Authenticate");
 
 router.get("/", authentication, (req, res) => {
-  res.send("home page router");
+  const uid = req.user;
+  res.json({ uid: uid, msg: true });
 });
 
 router.post("/register", async (req, res) => {
@@ -87,7 +88,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/getuser", authentication, async (req, res) => {
   try {
-    console.log(req.user.id);
+    // console.log(req.user.id);
     const userid = req.user.id;
     const user = await Userschema.findById(userid).select("-pass");
     res.send(user);
@@ -95,6 +96,13 @@ router.get("/getuser", authentication, async (req, res) => {
     console.log(error.message);
     res.status(500).send("internal server error");
   }
+});
+
+router.get("/about", authentication, async (req, res) => {
+  const uid = req.user;
+  const userdata = await Userschema.findById(uid);
+  console.log(userdata);
+  res.json({ userdata: userdata, msg: true });
 });
 
 module.exports = router;
