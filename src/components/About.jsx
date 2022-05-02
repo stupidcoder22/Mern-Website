@@ -27,7 +27,9 @@ const About = () => {
         window.alert("Please Login First");
         navigate("/login");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     aboutpage();
@@ -45,8 +47,8 @@ const About = () => {
           </div>
           <div className="col-md-6">
             <div className="profile-head">
-              <h2>Prateek Singh</h2>
-              <h6>Web Developer</h6>
+              <h2>{data.name}</h2>
+              <h6>{data.work}</h6>
               <p className="profile-rating mt-3 mb-5">
                 RANKINGS: <span> 1/10 </span>
               </p>

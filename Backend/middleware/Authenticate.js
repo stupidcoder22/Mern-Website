@@ -8,8 +8,14 @@ const verify = (req, res, next) => {
   }
   try {
     const data = jwt.verify(token, jwtKey);
-    req.user = data.user;
-    next();
+
+    if (data !== null) {
+      req.user = data.user;
+      next();
+    }
+    if (data === null) {
+      console.log("data is null");
+    }
   } catch (error) {
     res
       .status(401)

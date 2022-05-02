@@ -86,12 +86,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/getuser", authentication, async (req, res) => {
+router.get("/getdata", authentication, async (req, res) => {
   try {
-    // console.log(req.user.id);
-    const userid = req.user.id;
-    const user = await Userschema.findById(userid).select("-pass");
-    res.send(user);
+    const uid = req.user;
+    const userdata = await Userschema.findById(uid);
+    res.json({ userdata: userdata, msg: true });
   } catch (error) {
     console.log(error.message);
     res.status(500).send("internal server error");
@@ -101,8 +100,28 @@ router.get("/getuser", authentication, async (req, res) => {
 router.get("/about", authentication, async (req, res) => {
   const uid = req.user;
   const userdata = await Userschema.findById(uid);
-  console.log(userdata);
   res.json({ userdata: userdata, msg: true });
+});
+
+router.post("/contact", authentication, async (req, res) => {
+  try {
+    const { name, email, phone, message } = req.body;
+
+    if (!name || !email || !phone || !message) {
+      res.json({ error: "please fill contact form", msg: false });
+    }
+    const resdata = await Userschema.findById(req.user);
+
+    if (!resdata) {
+      const value = await Userschema.insert({
+        messages: [{ name, email, phone, message }],
+      });
+      const result = value.save();
+      console.log(result);
+    }
+  } catch (error) {
+    res.json({ error: error, msg: false });
+  }
 });
 
 module.exports = router;
