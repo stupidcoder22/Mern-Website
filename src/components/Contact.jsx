@@ -54,7 +54,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const tokendata = localStorage.getItem("token");
-    if (tokendata !== null) {
+    if (tokendata != null) {
       const { name, email, phone, message } = data;
       console.log(name, email, phone, message);
       const response = await fetch("http://localhost:1000/contact", {
@@ -75,8 +75,8 @@ const Contact = () => {
       if (!result) {
         console.log("uploading data error");
       } else {
-        window.alert("message iss sent");
-        setdata({ ...data, message: "" });
+        window.alert("message is sent");
+        // setdata({ ...data, message: "" });
       }
     }
   };

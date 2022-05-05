@@ -7,6 +7,7 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
 import Errorpage from "./components/Errorpage";
+import Logout from "./components/Logout";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="*" element={<Errorpage />} />
       </Routes>
     </BrowserRouter>

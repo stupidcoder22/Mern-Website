@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtKey = "secret";
 var authentication = require("../middleware/Authenticate");
+const Contact = require("../model/Contact");
 
 router.get("/", authentication, (req, res) => {
   const uid = req.user;
@@ -108,18 +109,21 @@ router.post("/contact", authentication, async (req, res) => {
     const { name, email, phone, message } = req.body;
 
     if (!name || !email || !phone || !message) {
-      res.json({ error: "please fill contact form", msg: false });
+      return res.json({ error: "please fill contact form", msg: false });
     }
-    const resdata = await Userschema.findById(req.user);
-
-    if (!resdata) {
-      const value = await Userschema.insert({
-        messages: [{ name, email, phone, message }],
-      });
-      const result = value.save();
-      console.log(result);
-    }
+    const userdata = await Userschema.findById(req.user);
+    const value = await Contact({
+      name,
+      email,
+      phone,
+      message,
+    });
+    await value.save();
+    userdata.messages.push(value);
+    userdata.save();
+    return res.status(200).json({ userdata });
   } catch (error) {
+    console.log("error", error);
     res.json({ error: error, msg: false });
   }
 });

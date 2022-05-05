@@ -47,6 +47,12 @@ const Navbar = () => {
                   Registration
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link className="nav-link" to="/logout">
+                  Logout
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

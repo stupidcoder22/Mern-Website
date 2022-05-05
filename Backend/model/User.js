@@ -10,10 +10,9 @@ const Userschema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   messages: [
     {
-      name: { type: String, required: true },
-      email: { type: String, required: true },
-      phone: { type: Number, required: true },
-      message: { type: String, required: true },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Contact",
+      default: [],
     },
   ],
 });
